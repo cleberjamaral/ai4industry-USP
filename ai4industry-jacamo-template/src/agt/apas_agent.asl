@@ -36,9 +36,9 @@ thing(boschApas,Thing) :-
   .
 
 +!start :
-    name(Name)
+    name(Name) 
     <-
-    .print("Belief base is under initialization");
+    .print("APAS Belief base is under initialization ", Name);
     !!run(Name);
   .
 
@@ -48,7 +48,7 @@ thing(boschApas,Thing) :-
     .print("Found suitable RobotArm : ", Thing) ;
     // To also execute the requests, remove the second init parameter (dryRun flag).
     // When dryRun is set to true, the requests are printed (but not executed).
-    makeArtifact(Name, "org.hypermedea.ThingArtifact", [Thing], ArtId);
+    makeArtifact(Name, "org.hypermedea.ThingArtifact", [Thing, false], ArtId);
     focus(ArtId);
     // set credentials to access the Thing (DX10 workshop of the IT'm factory)
     ?credentials(SimuName,SimuPasswd);
@@ -57,19 +57,19 @@ thing(boschApas,Thing) :-
     ?has_origin_coordinates(Name,CX,CY,CZ);
     .println(Thing, " has origin coordinates ",CX," ",CY," ",CZ);
 
-    !getDescription(Thing);
+    !getDescription(Name);
 
-    !testStatus(Name);
+    //!testStatus(Name);
 
     // Not necessary to get all of them regularly. 
     // Choose and comment, otherwise there is a risk of
     // consuming all the computing resources
-    !observeInMovement(Name);
-    !observeGrasping(Name);
+    // !observeInMovement(Name);
+    // !observeGrasping(Name);
 
     !potItems(Name);
 
-    !testStatus(Name);
+    //!testStatus(Name);
   .
 
 +!run(Name) :
@@ -102,6 +102,11 @@ thing(boschApas,Thing) :-
     true
     <-
     .println("carrying a pot from ",From," to ",To);
+    !release(Name,From);
+    !move(Name,From);
+    !grasp(Name,From);
+    !move(Name,To);
+    !release(Name,To);
   .
 
 +!observeInMovement(Name) :
@@ -154,6 +159,7 @@ thing(boschApas,Thing) :-
 
 { include("inc/robot_arm_skills.asl") }
 { include("inc/common.asl") }
+{ include("inc/owl-signature.asl") }
 
 { include("$jacamoJar/templates/common-cartago.asl") }
 { include("$jacamoJar/templates/common-moise.asl") }

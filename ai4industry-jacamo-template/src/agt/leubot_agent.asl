@@ -41,7 +41,7 @@ location_packaging([3.2,0,1]). // relative position of packaging workshop
     & api_key(Token)
     <-
     .print("Found suitable RobotArm : ", Thing) ;
-    makeArtifact(Name, "org.hypermedea.ThingArtifact", [Thing], ArtId);
+    makeArtifact(Name, "org.hypermedea.ThingArtifact", [Thing, true], ArtId);
     // To initialize the ThingArtifact in a dryRun mode (requests are printed but not executed)
     // makeArtifact(Name, "org.hypermedea.ThingArtifact", [Thing, false], ArtId);
     // .println("PAY ATTENTION: I am in dryRun=True mode");
@@ -55,7 +55,7 @@ location_packaging([3.2,0,1]). // relative position of packaging workshop
     ?has_origin_coordinates(Name,CX,CY,CZ);
     .println(Thing, " has origin coordinates ",CX," ",CY," ",CZ);
 
-    !getDescription(Thing);
+    !getDescription(Name);
 
     // Set API key is a call of the operation setAPIKey on the ThingArtifact
     setAPIKey(Token)[artifact_name(Name)];
@@ -104,6 +104,7 @@ location_packaging([3.2,0,1]). // relative position of packaging workshop
 
 { include("inc/robot_arm_skills.asl") }
 { include("inc/common.asl") }
+{ include("inc/owl-signature.asl") }
 
 { include("$jacamoJar/templates/common-cartago.asl") }
 { include("$jacamoJar/templates/common-moise.asl") }

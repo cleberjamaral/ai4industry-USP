@@ -51,7 +51,7 @@ thing(cupProvider,Thing) :-
      // set credentials to access the Thing
     ?credentials(SimuName,SimuPasswd);
     setAuthCredentials(SimuName, SimuPasswd)[artifact_id(ArtId)] ;
-    !getDescription(Thing);
+    !getDescription(Name);
 .
 
 +!run(Name) :
@@ -65,6 +65,13 @@ thing(cupProvider,Thing) :-
     true
     <-
     !order(cupProvider,Value);
+    .println("processed order and sending message to ",Sender);
+    .send(Sender,tell,done(order));
+  .
+
+-!order(Value)[source(Sender)] :
+    true
+    <-
     .println("processed order and sending message to ",Sender);
     .send(Sender,tell,done(order));
   .
@@ -88,5 +95,7 @@ thing(cupProvider,Thing) :-
   .
 
 { include("inc/common.asl") }
+{ include("inc/owl-signature.asl") }
+
 
 { include("$jacamoJar/templates/common-cartago.asl") }

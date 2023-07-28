@@ -71,7 +71,7 @@ thing(packagingWorkshop,Thing) :-
 
     ?locationOfInputMaterial(Name,CIX,CIY,CIZ);
     ?locationOfOutputProduct(Name,COX,COY,COZ);
-    !getDescription(Thing);
+    !getDescription(Name);
     !testStatus(Name);
 
     // Not necessary to get all of them regularly. 
@@ -113,5 +113,6 @@ thing(packagingWorkshop,Thing) :-
 
 { include("inc/xy10_skills.asl") }
 { include("inc/common.asl") }
+{ include("inc/owl-signature.asl") }
 
 { include("$jacamoJar/templates/common-cartago.asl") }

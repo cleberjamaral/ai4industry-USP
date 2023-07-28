@@ -69,28 +69,30 @@ thing(fillingWorkshop,Thing) :-
     .println("ThingArtifact created");
     //  ?locationOfInputMaterial(Name,CIX,CIY,CIZ);
     //  ?locationOfOutputProduct(Name,COX,COY,COZ);
-    !getDescription(Thing);
-    !testStatus(Name);
+    !getDescription(Name);
+    //!testStatus(Name);
     
     // Not necessary to get all of them regularly. 
     // Choose and comment, otherwise there is a risk of
     // consuming all the computing resources
-    !observeTankLevel(Name);
-    !observeConveyorSpeed(Name);
-    !observeConveyorHeadStatus(Name);
-    !observeOpticalSensorStatus(Name);
-    !observeMagneticValveStatus(Name);
-    !observePositionX(Name);
-    !observeStackLightStatus(Name);
+    // !observeTankLevel(Name);
+    // !observeConveyorSpeed(Name);
+    // !observeConveyorHeadStatus(Name);
+    // !observeOpticalSensorStatus(Name);
+    // !observeMagneticValveStatus(Name);
+    // !observePositionX(Name);
+    // !observeStackLightStatus(Name);
     
     ?conveyorSpeed(Name,IS);
     if (IS == 0) {
       !changeConveyorSpeed(Name,0.5);
     }
+
+    !orderYogurt;
     
     !fillItems(Name);
 
-    !testStatus(Name);
+    // !testStatus(Name);
   .
 
 +!run(Name) :
@@ -99,9 +101,14 @@ thing(fillingWorkshop,Thing) :-
     .wait(100);
     !!run(Name).
 
++!orderYogurt
+  <- .print("Ordering Yogurt!");
+  .send(dairy_product_provider, achieve, order(1000000000000)).
+
 // Fake plan. Adapt.
 +!fillItems(Name) :
     thing(Name,Thing)
+
     <-
     .println("is filling Item.");
     .wait(1000);
@@ -111,5 +118,6 @@ thing(fillingWorkshop,Thing) :-
 
 { include("inc/dx10_skills.asl") }
 { include("inc/common.asl") }
+{ include("inc/owl-signature.asl") }
 
 { include("$jacamoJar/templates/common-cartago.asl") }

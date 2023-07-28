@@ -46,7 +46,7 @@ thing(dairyProductProvider,Thing) :-
     focus(ArtId);
     ?credentials(SimuName,SimuPasswd);
     setAuthCredentials(SimuName, SimuPasswd)[artifact_id(ArtId)] ;
-    !getDescription(Thing);
+    !getDescription(Name);
 .
 
 +!run(Name) :
@@ -59,6 +59,7 @@ thing(dairyProductProvider,Thing) :-
 +!order(Value)[source(Sender)] :
     true
     <-
+    .print("Ordering yogurt")
     !order(dairyProductProvider,Value);
     .println("processed order and sending message to ",Sender);
     .send(Sender,tell,done(order));
@@ -74,5 +75,6 @@ thing(dairyProductProvider,Thing) :-
   .
 
 { include("inc/common.asl") }
+{ include("inc/owl-signature.asl") }
 
 { include("$jacamoJar/templates/common-cartago.asl") }

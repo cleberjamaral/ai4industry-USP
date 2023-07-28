@@ -23,7 +23,11 @@ An agent's state is roughly composed of beliefs (logical statements, as in Prolo
 
 TODO: replace N with your group number (to obtain e.g. "simu1", "simu2", etc).
 */
-credentials("simuN", "simuN") .
+credentials("simu1", "simu1") .
+desiredSpeed(1) .
+positionToPick(1,1) .
+storageCapacity(5,5) .
+
 
 /*
 Entry point of vl10_agent's program.
@@ -45,31 +49,102 @@ Once the event occurs, the agent will therefore execute the two actions and remo
     /*
     This pseudo-action generates an event of the form +!readConveyorSpeed, triggering the plan defined below.
     */
-    !readConveyorSpeed;
+    .wait(5000);
+    !orderCups;
+    .wait(done(order)[source(cup_provider)]);
+    !setConveyorSpeed;
+    //!readAllProperties;
+    !pickAllItems;
   .
 
-+!readConveyorSpeed :
-    /*
-    This plan has no guard condition. Side note: when a plan has no guard condition, it can also be written as:
++!orderCups
+  <- .print("Ordering cups!");
+  .send(cup_provider, achieve, order(25)).
 
-    triggering_event <- action ; action ; ... action .
-    */
-    true
++!readAllProperties 
     <-
-    /*
-    readProperty() is one of the WoT operations. For the VL10 workshop, this operation sends a GET request to the simulation server for the "conveyorSpeed" property and maps Val to the server's response payload (a real number). As in Prolog, Val is a variable because it starts with a capital letter.
-    */
-    readProperty("conveyorSpeed", Val);
-    /*
-    .print() is an "internal" action. All agents have some internal actions built in, as opposed to external actions that depend on the environment in which an agent is situated. See the Jason stdlib for a list of internal actions:
-    https://jason.sourceforge.net/api/jason/stdlib/package-summary.html
-    */
-    .print("Conveyor speed: ", Val);
-    /*
-    The agent should print "Conveyor speed: 0".
-    If you have an authentication error, see line 26.
-    */
+    !readClampStatus;
+    .wait(1000);
+    !readCapacity;
+    .wait(1000);
+    !readStackLightStatus;
+    .wait(1000);
+    !readConveyorSpeed;
+    .wait(1000);
+    !readPosition;
+    .wait(1000);
+    //!readAllProperties;
   .
+
++!readPosition 
+    <-
+
+    readProperty("positionX", Xval);
+    readProperty("positionZ", Zval);
+    .print("Cartesian Motor Position");
+    .print("X = ", Xval);
+    .print("Z = ", Zval);
+  .
+
++!readStackLightStatus 
+    <-
+
+    readProperty("stackLightStatus", StackLightStatus);
+    .print("Stack Light Status: ", StackLightStatus);
+  .
+
++!readClampStatus 
+    <-
+
+    readProperty("clampStatus", ClampStatus);
+    .print("Clamp Status: ", ClampStatus);
+  .
+
+
++!readCapacity
+    <-
+
+    readProperty("capacity", Capacity);
+    .print("Capacity: ", Capacity);
+  .
+
++!readConveyorSpeed 
+    <-
+
+    readProperty("conveyorSpeed", ConveyorSpeed);
+    .print("Conveyor speed: ", ConveyorSpeed);
+  .
+
++!setConveyorSpeed :
+    desiredSpeed(Speed)
+    <-
+
+    .print("Desired Speed: ", Speed);
+    writeProperty("conveyorSpeed", Speed);
+    !readConveyorSpeed;
+    .
+
++!pickOneItem(Xval, Zval)
+    <-
+    invokeAction("pickItem", [Xval,Zval]);
+    .print(Response)
+    .
+
+-!pickOneItem(Xval, Zval)
+    <-
+    .print("No item in position ", [Xval,Zval]).
+
++!pickAllItems :
+    storageCapacity(Xcapacity, Zcapacity)
+    <-
+    for( .range(Xi, 1, Xcapacity) ){
+        for( .range(Zi, 1, Zcapacity)){
+            !pickOneItem(Xi, Zi);
+        }
+    }
+    .
+
+
 
 /*
 Exercises:

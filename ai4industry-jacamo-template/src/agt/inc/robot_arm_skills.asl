@@ -3,10 +3,10 @@
 @author Olivier Boissier (Mines Saint-Etienne)
 */
 
-// location_conveyor([-0.5,0.5,0.2]). // relative position of conveyor
- location_conveyor([2.2,0,1]). // absolute position of conveyor
-// location_packaging([0.5,0.5,0.2]). // relative position of packaging workshop
- location_packaging([3.2,0,1]). // absolute position of packaging workshop
+ location_conveyor([-0.5,0.5,0.2]). // relative position of conveyor
+ //location_conveyor([2.2,0,1]). // absolute position of conveyor
+ location_packaging([0.5,0.5,0.2]). // relative position of packaging workshop
+ //location_packaging([3.2,0,1]). // absolute position of packaging workshop
 
 /*
 location_conveyor("dx10",ValueX, ValueY, ValueZ) :-

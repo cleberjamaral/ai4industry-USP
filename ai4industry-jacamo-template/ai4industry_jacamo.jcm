@@ -1,15 +1,16 @@
 mas itm_factory_mas {
 
     // Agent for controlling and testing the TD via the ThingArtifact
+    /*
     agent controller {
         beliefs:    credentials("simu1","simu1")                        // credentials to access the thing
         goals:      start                                               // initial goal. Comment to make agent inactive
         join:       itm_factory_workspace                               // working environment for the agent
-        focus:      itm_factory_workspace.test_vl10                     
-        focus:      itm_factory_workspace.test_dx10                     
-        focus:      itm_factory_workspace.test_boschApas
-        focus:      itm_factory_workspace.test_xy10
-    }
+        focus:      itm_factory_workspace.vl10                     
+        focus:      itm_factory_workspace.dx10                     
+        focus:      itm_factory_workspace.boschApas
+        focus:      itm_factory_workspace.xy10
+    }*/
 
     // Agent for providing cups and packages
     agent cup_provider {
@@ -100,12 +101,12 @@ mas itm_factory_mas {
     }
 
     workspace itm_factory_workspace  {
-        artifact test_vl10 : org.hypermedea.ThingArtifact("https://ci.mines-stetienne.fr/kg/itmfactory/vl10")                           // for test by controler agent
-        artifact test_dx10 : org.hypermedea.ThingArtifact("https://ci.mines-stetienne.fr/kg/itmfactory/dx10")                           // for test by controler agent
-        artifact test_boschApas : org.hypermedea.ThingArtifact("https://ci.mines-stetienne.fr/kg/itmfactory/bosch-apas")                     // for test by controler agent
-        artifact test_xy10 : org.hypermedea.ThingArtifact("https://ci.mines-stetienne.fr/kg/itmfactory/xy10")                           // for test by controler agent
-        artifact test_cupProvider : org.hypermedea.ThingArtifact("https://ci.mines-stetienne.fr/kg/cup-provider")                              // for test by controler agent
-        artifact test_dairyProductProvider : org.hypermedea.ThingArtifact("https://ci.mines-stetienne.fr/kg/dairy-product-provider")       // for test by controler agent
+        artifact vl10 : org.hypermedea.ThingArtifact("https://ci.mines-stetienne.fr/kg/itmfactory/vl10")                           // for test by controler agent
+        //artifact dx10 : org.hypermedea.ThingArtifact("https://ci.mines-stetienne.fr/kg/itmfactory/dx10")                           // for test by controler agent
+        //artifact boschApas : org.hypermedea.ThingArtifact("https://ci.mines-stetienne.fr/kg/itmfactory/bosch-apas")                     // for test by controler agent
+        //artifact xy10 : org.hypermedea.ThingArtifact("https://ci.mines-stetienne.fr/kg/itmfactory/xy10")                           // for test by controler agent
+        //artifact cupProvider : org.hypermedea.ThingArtifact("https://ci.mines-stetienne.fr/kg/cup-provider")                              // for test by controler agent
+        //artifact dairyProductProvider : org.hypermedea.ThingArtifact("https://ci.mines-stetienne.fr/kg/dairy-product-provider")       // for test by controler agent
 
         artifact ld_spider : org.hypermedea.LinkedDataArtifact()          // for browsing RDF data
         artifact onto_mgr : org.hypermedea.OntologyArtifact()             // for managing OWL ontology signatures
